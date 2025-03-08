@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 8.0.1'
 
 gem 'cssbundling-rails'
+gem 'haml-rails'
 gem 'jsbundling-rails'
 gem 'pg'
 gem 'propshaft'
@@ -21,6 +22,7 @@ gem 'thruster', require: false
 group :development, :test do
   gem 'brakeman', require: false
   gem 'debug'
+  gem 'haml_lint'
   gem 'sgcop', github: 'SonicGarden/sgcop', branch: 'main'
 end
 
