@@ -24,6 +24,7 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'debug'
   gem 'haml_lint'
+  gem 'rspec-rails'
   gem 'sgcop', github: 'SonicGarden/sgcop', branch: 'main'
 end
 
