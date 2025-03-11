@@ -17,6 +17,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_11_223938) do
   create_table "admins", force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", null: false
+    t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
