@@ -1,4 +1,4 @@
-= simple_form_for(@instructor) do |f|
+= simple_form_for([:admins, instructor]) do |f|
   = f.input :name
   = f.input :email
-  = f.button :submit
+  = f.button :submit, class: 'btn btn-primary'
