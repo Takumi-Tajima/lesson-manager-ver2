@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
 
   namespace :admins do
-    root 'home#index'
+    root 'lessons#index'
     resources :instructors, only: %i[index new create edit update destroy]
+    resources :lessons, only: %i[index show new create edit update destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
