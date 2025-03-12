@@ -1,0 +1,23 @@
+%h1.fs-2 講師の一覧
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th
+      %th
+      %th
+
+  %tbody
+    - @instructors.each do |instructor|
+      %tr
+        %td= instructor.name
+        %td= instructor.email
+        %td= link_to 'Show', instructor
+        %td= link_to 'Edit', edit_instructor_path(instructor)
+        %td= link_to 'Destroy', instructor, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Instructor', new_instructor_path
