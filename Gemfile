@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 8.0.1'
 
 gem 'cssbundling-rails'
+# リリースされているdevseiがrails8に対応していないため、mainブランチを指定
+gem 'devise', git: 'https://github.com/heartcombo/devise', branch: 'main'
 gem 'haml-rails'
 gem 'jsbundling-rails'
 gem 'pg'
@@ -24,6 +26,7 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'debug'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'haml_lint'
   gem 'rspec-rails'
   gem 'sgcop', github: 'SonicGarden/sgcop', branch: 'main'
@@ -36,4 +39,5 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'selenium-webdriver'
 end

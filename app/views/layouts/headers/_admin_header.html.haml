@@ -1,0 +1,14 @@
+.navbar.bg-light
+  .container-fluid
+    .d-flex.align-items-center
+      .navbar-brand.fs-2= link_to '管理者: LessonManager', admins_root_path, class: 'text-decoration-none text-body'
+    %ul.navbar-nav.flex-row.gap-3
+      %li.nav-item= link_to '講師一覧', admins_instructors_path, class: 'fs-5 text-decoration-none text-body'
+    %ul.navbar-nav.ms-auto
+      - if admin_signed_in?
+        %li.nav-item.d-flex
+          .me-2.p-2= current_admin.email
+          = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'btn btn-outline-danger'
+      - else
+        %li.nav-item
+          = link_to 'ログイン', new_admin_session_path, class: 'btn btn-primary'
