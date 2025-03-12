@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 8.0.1'
 
 gem 'cssbundling-rails'
-gem 'devise'
+# リリースされているdevseiがrails8に対応していないため、mainブランチを指定
+gem 'devise', git: 'https://github.com/heartcombo/devise', branch: 'main'
 gem 'haml-rails'
 gem 'jsbundling-rails'
 gem 'pg'
