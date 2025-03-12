@@ -2,6 +2,9 @@
 ja:
   activerecord:
     attributes:
+      instructor:
+        name: 名前
+        email: メールアドレス
       admin:
         email: メールアドレス
         password: パスワード
