@@ -1,11 +1,8 @@
-class InstructorsController < ApplicationController
-  before_action :set_instructor, only: %i[show edit update destroy]
+class Admins::InstructorsController < Admins::ApplicationController
+  before_action :set_instructor, only: %i[edit update destroy]
 
   def index
     @instructors = Instructor.default_order
-  end
-
-  def show
   end
 
   def new
@@ -19,7 +16,7 @@ class InstructorsController < ApplicationController
     @instructor = Instructor.new(instructor_params)
 
     if @instructor.save
-      redirect_to @instructor, notice: t('controllers.common.created', model: '講師')
+      redirect_to admins_instructors_path, notice: t('controllers.common.created', model: '講師')
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +24,7 @@ class InstructorsController < ApplicationController
 
   def update
     if @instructor.update(instructor_params)
-      redirect_to @instructor, notice: t('controllers.common.updated', model: '講師'), status: :see_other
+      redirect_to admins_instructors_path, notice: t('controllers.common.updated', model: '講師'), status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,7 +32,7 @@ class InstructorsController < ApplicationController
 
   def destroy
     @instructor.destroy!
-    redirect_to instructors_path, notice: t('controllers.common.destroyed', model: '講師'), status: :see_other
+    redirect_to admins_instructors_path, notice: t('controllers.common.destroyed', model: '講師'), status: :see_other
   end
 
   private
