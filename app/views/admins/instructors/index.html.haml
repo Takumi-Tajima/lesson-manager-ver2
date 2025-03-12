@@ -1,23 +1,20 @@
 %h1.fs-2 講師の一覧
 
-%table
+= link_to '新規講師の登録', new_admins_instructor_path, class: 'btn btn-primary'
+
+%table.table.mt-3
   %thead
     %tr
-      %th Name
-      %th Email
-      %th
+      %th 名前
+      %th メールアドレス
       %th
       %th
 
-  %tbody
+  %tbody.align-middle
     - @instructors.each do |instructor|
       %tr
         %td= instructor.name
         %td= instructor.email
-        %td= link_to 'Show', instructor
-        %td= link_to 'Edit', edit_instructor_path(instructor)
-        %td= link_to 'Destroy', instructor, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Instructor', new_instructor_path
+        %td= link_to '編集', edit_admins_instructor_path(instructor), class: 'btn btn-primary'
+        %td= button_to '削除', admins_instructor_path(instructor), method: :delete,
+                        data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
