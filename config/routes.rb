@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :admins do
     root 'home#index'
+    resources :instructors, only: %i[index new create edit update destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
