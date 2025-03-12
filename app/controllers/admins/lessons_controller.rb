@@ -1,8 +1,8 @@
 class Admins::LessonsController < Admins::ApplicationController
-  before_action :set_lesson, only: %i[ show edit update destroy ]
+  before_action :set_lesson, only: %i[show edit update destroy]
 
   def index
-    @lessons = Lesson.all
+    @lessons = Lesson.default_order
   end
 
   def show
