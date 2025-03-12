@@ -11,5 +11,5 @@
   %tbody
     - @lessons.each do |lesson|
       %tr
-        %td= link_to lesson.id, admin_lesson_path(lesson)
+        %td= link_to lesson.id, admins_lesson_path(lesson)
         %td= lesson.name
