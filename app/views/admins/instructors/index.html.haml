@@ -16,5 +16,5 @@
         %td= instructor.name
         %td= instructor.email
         %td= link_to '編集', edit_admins_instructor_path(instructor), class: 'btn btn-primary'
-        %td= button_to '削除', admins_instructor_path(instructor), method: :delete,
-                        data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
+        %td
+          = button_to '削除', admins_instructor_path(instructor), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
