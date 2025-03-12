@@ -1,25 +1,15 @@
-%h1 Listing lessons
+%h1.fs-2 レッスン一覧
 
-%table
+= link_to '新しいレッスンを登録', new_admins_lesson_path, class: 'btn btn-primary'
+
+%table.table.mt-3
   %thead
     %tr
-      %th Name
-      %th Description
-      %th Instructor
-      %th
-      %th
-      %th
+      %th ID
+      %th レッスン名
 
   %tbody
     - @lessons.each do |lesson|
       %tr
+        %td= link_to lesson.id, admin_lesson_path(lesson)
         %td= lesson.name
-        %td= lesson.description
-        %td= lesson.instructor
-        %td= link_to 'Show', lesson
-        %td= link_to 'Edit', edit_lesson_path(lesson)
-        %td= link_to 'Destroy', lesson, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Lesson', new_lesson_path
