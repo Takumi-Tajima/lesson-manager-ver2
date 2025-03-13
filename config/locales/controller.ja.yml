@@ -4,4 +4,3 @@ ja:
       created: "%{model}を登録しました。"
       updated: "%{model}を編集しました。"
       destroyed: "%{model}を削除しました。"
-      not_destroyed: "%{model}を削除できませんでした。"
