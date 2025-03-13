@@ -26,4 +26,51 @@ RSpec.describe 'レッスンの機能', type: :system do
       expect(page).to have_content 'レッスンA'
     end
   end
+
+  describe '新規登録機能' do
+    before { create(:instructor, name: '講師A') }
+
+    it 'レッスンを新規登録することができること' do
+      visit admins_lessons_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+      click_on '新しいレッスンを登録'
+
+      expect(page).to have_selector 'h1', text: 'レッスン新規登録'
+
+      fill_in 'レッスン名', with: 'レッスンA'
+      select '講師A', from: '講師'
+
+      expect do
+        click_on '登録する'
+        expect(page).to have_content 'レッスンを登録しました'
+      end.to change(Lesson, :count).by(1)
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+      expect(page).to have_content 'レッスンA'
+    end
+
+    context '名前に何も入力されていない時' do
+      it 'エラーメッセージが表示され、登録ができないこと' do
+        visit admins_lessons_path
+
+        expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+        click_on '新しいレッスンを登録'
+
+        expect(page).to have_selector 'h1', text: 'レッスン新規登録'
+
+        fill_in 'レッスン名', with: ''
+        select '講師A', from: '講師'
+
+        expect do
+          click_on '登録する'
+        end.not_to change(Lesson, :count)
+
+        expect(page).to have_selector 'h1', text: 'レッスン新規登録'
+        expect(page).to have_content 'レッスン名を入力してください'
+      end
+    end
+  end
 end
