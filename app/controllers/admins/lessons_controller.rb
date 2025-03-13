@@ -19,7 +19,7 @@ class Admins::LessonsController < Admins::ApplicationController
     @lesson = Lesson.new(lesson_params)
 
     if @lesson.save
-      redirect_to @lesson, notice: "Lesson was successfully created."
+      redirect_to admins_lessons_path, notice: t('controllers.common.created', model: 'レッスン')
     else
       render :new, status: :unprocessable_entity
     end
@@ -39,11 +39,12 @@ class Admins::LessonsController < Admins::ApplicationController
   end
 
   private
-    def set_lesson
-      @lesson = Lesson.find(params.expect(:id))
-    end
 
-    def lesson_params
-      params.expect(lesson: [ :name, :description, :instructor_id ])
-    end
+  def set_lesson
+    @lesson = Lesson.find(params.expect(:id))
+  end
+
+  def lesson_params
+    params.expect(lesson: [ :name, :description, :instructor_id ])
+  end
 end
