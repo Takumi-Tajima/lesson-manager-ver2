@@ -27,6 +27,28 @@ RSpec.describe 'レッスンの機能', type: :system do
     end
   end
 
+  describe '詳細画面のデータ表示' do
+    let(:instructor) { create(:instructor, name: '田島 匠') }
+
+    before { create(:lesson, id: 1, name: 'レッスンA', description: 'レッスンAの詳細な説明', instructor: instructor) }
+
+    it 'レッスンの詳細データを閲覧できること' do
+      visit admins_lessons_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+      tr = find('tr', text: 'レッスンA')
+
+      within tr do
+        click_on '1'
+      end
+
+      expect(page).to have_selector 'h1', text: 'レッスンA'
+      expect(page).to have_content 'レッスン詳細: レッスンAの詳細な説明'
+      expect(page).to have_content '講師: 田島 匠'
+    end
+  end
+
   describe '新規登録機能' do
     before { create(:instructor, name: '講師A') }
 

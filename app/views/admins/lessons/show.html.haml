@@ -1,15 +1,9 @@
-%p#notice= notice
+%h1.fs-2= @lesson.name
 
-%p
-  %b Name:
-  = @lesson.name
-%p
-  %b Description:
-  = @lesson.description
-%p
-  %b Instructor:
-  = @lesson.instructor
+.ms-auto
+  .mt-3 レッスン詳細: #{@lesson.description}
+  .mt-3 講師: #{@lesson.instructor.name}
 
-= link_to 'Edit', edit_lesson_path(@lesson)
-\|
-= link_to 'Back', lessons_path
+.mt-5
+  = link_to '編集', edit_admins_lesson_path(@lesson), class: 'btn btn-primary'
+  = button_to '削除', admins_lesson_path(@lesson), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
