@@ -1,0 +1,5 @@
+= simple_form_for([:admins, lesson]) do |f|
+  = f.input :name
+  = f.input :description
+  = f.association :instructor
+  = f.button :submit

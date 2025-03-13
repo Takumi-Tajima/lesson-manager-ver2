@@ -11,8 +11,7 @@ RSpec.describe '講師の機能', type: :system do
     it 'トップページから講師一覧に遷移して、講師の一覧データを閲覧できること' do
       visit admins_root_path
 
-      # TODO: レッスン作成時に、レッスンの一覧ページをルートに設定する
-      # expect(page).to have_selector 'h1', text: 'レッスン一覧'
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
 
       within '.navbar' do
         click_on '講師一覧'

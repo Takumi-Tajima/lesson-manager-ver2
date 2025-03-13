@@ -1,0 +1,15 @@
+%h1.fs-2 レッスン一覧
+
+= link_to '新しいレッスンを登録', new_admins_lesson_path, class: 'btn btn-primary'
+
+%table.table.mt-3
+  %thead
+    %tr
+      %th ID
+      %th レッスン名
+
+  %tbody
+    - @lessons.each do |lesson|
+      %tr
+        %td= link_to lesson.id, admins_lesson_path(lesson)
+        %td= lesson.name
