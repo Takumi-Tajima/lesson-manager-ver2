@@ -164,4 +164,33 @@ RSpec.describe 'レッスンの機能', type: :system do
       end
     end
   end
+
+  describe '削除機能' do
+    before { create(:lesson, id: 1, name: '英語レッスン') }
+
+    it 'レッスンを削除することができること' do
+      visit admins_lessons_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+      expect(page).to have_content '英語レッスン'
+
+      tr = find('tr', text: '英語レッスン')
+
+      within tr do
+        click_on '1'
+      end
+
+      expect(page).to have_selector 'h1', text: '英語レッスン'
+
+      expect do
+        accept_confirm do
+          click_on '削除'
+        end
+        expect(page).to have_content 'レッスンを削除しました'
+      end.to change(Lesson, :count).by(-1)
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+      expect(page).not_to have_content '英語レッスン'
+    end
+  end
 end

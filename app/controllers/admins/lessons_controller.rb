@@ -35,7 +35,7 @@ class Admins::LessonsController < Admins::ApplicationController
 
   def destroy
     @lesson.destroy!
-    redirect_to lessons_path, notice: "Lesson was successfully destroyed.", status: :see_other
+    redirect_to admins_lessons_path, notice: t('controllers.common.destroyed', model: 'レッスン'), status: :see_other
   end
 
   private
@@ -45,6 +45,6 @@ class Admins::LessonsController < Admins::ApplicationController
   end
 
   def lesson_params
-    params.expect(lesson: [ :name, :description, :instructor_id ])
+    params.expect(lesson: %i[name description instructor_id])
   end
 end
