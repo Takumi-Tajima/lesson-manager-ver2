@@ -27,7 +27,7 @@ class Admins::LessonsController < Admins::ApplicationController
 
   def update
     if @lesson.update(lesson_params)
-      redirect_to @lesson, notice: "Lesson was successfully updated.", status: :see_other
+      redirect_to admins_lesson_path(@lesson), notice: t('controllers.common.updated', model: 'レッスン'), status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end

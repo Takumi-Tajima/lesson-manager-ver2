@@ -95,4 +95,73 @@ RSpec.describe 'レッスンの機能', type: :system do
       end
     end
   end
+
+  describe '編集機能' do
+    let(:instructor1) { create(:instructor, name: '吉田なおや') }
+    let!(:instructor2) { create(:instructor, name: '佐々木健太郎') }
+
+    before { create(:lesson, id: 1, name: 'スペイン語入門', description: 'スペイン語初心者へのオンラインレッスン', instructor: instructor1) }
+
+    it 'レッスンを編集することができること' do
+      visit admins_lessons_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+      tr = find('tr', text: 'スペイン語入門')
+
+      within tr do
+        click_on '1'
+      end
+
+      expect(page).to have_selector 'h1', text: 'スペイン語入門'
+      expect(page).to have_content 'レッスン詳細: スペイン語初心者へのオンラインレッスン'
+      expect(page).to have_content '講師: 吉田なおや'
+
+      click_on '編集'
+
+      expect(page).to have_selector 'h1', text: 'レッスン編集'
+
+      fill_in 'レッスン名', with: 'スペイン語マスター'
+      fill_in '説明', with: '初心者から上級者まで対応するスペイン語コース'
+      select '佐々木健太郎', from: '講師'
+
+      expect do
+        click_on '更新する'
+        expect(page).to have_content 'レッスンを編集しました'
+      end.not_to change(Lesson.find(1), :name)
+
+      expect(page).to have_selector 'h1', text: 'スペイン語マスター'
+      expect(page).to have_content 'レッスン詳細: 初心者から上級者まで対応するスペイン語コース'
+      expect(page).to have_content '講師: 佐々木健太郎'
+    end
+
+    context '名前が空欄の場合' do
+      it 'エラーメッセージが表示され、更新ができないこと' do
+        visit admins_lessons_path
+
+        expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+        tr = find('tr', text: 'スペイン語入門')
+
+        within tr do
+          click_on '1'
+        end
+
+        expect(page).to have_selector 'h1', text: 'スペイン語入門'
+
+        click_on '編集'
+
+        expect(page).to have_selector 'h1', text: 'レッスン編集'
+
+        fill_in 'レッスン名', with: ''
+
+        expect do
+          click_on '更新する'
+        end.not_to change(Lesson.find(1), :name)
+
+        expect(page).to have_selector 'h1', text: 'レッスン編集'
+        expect(page).to have_content 'レッスン名を入力してください'
+      end
+    end
+  end
 end
