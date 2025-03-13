@@ -1,7 +1,3 @@
-%h1 Editing lesson
+%h1.fs-2 レッスン編集
 
-= render 'form'
-
-= link_to 'Show', @lesson
-\|
-= link_to 'Back', lessons_path
+= render 'form', lesson: @lesson
