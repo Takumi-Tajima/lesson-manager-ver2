@@ -4,7 +4,7 @@ ja:
       lesson:
         name: レッスン名
         description: 説明
-        instructor_id: 講師
+        instructor: 講師
       instructor:
         name: 名前
         email: メールアドレス
