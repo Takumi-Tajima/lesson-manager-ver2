@@ -4,6 +4,9 @@
   .mt-3 レッスン詳細: #{@lesson.description}
   .mt-3 講師: #{@lesson.instructor.name}
 
-.mt-5
+.my-4
+  = render 'admins/lessons/lesson_dates/index', lesson_dates: @lesson.lesson_dates
+
+%div
   = link_to '編集', edit_admins_lesson_path(@lesson), class: 'btn btn-primary'
   = button_to '削除', admins_lesson_path(@lesson), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
