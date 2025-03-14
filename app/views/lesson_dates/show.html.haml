@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Lesson:
+  = @lesson_date.lesson
+%p
+  %b Start at:
+  = @lesson_date.start_at
+%p
+  %b End at:
+  = @lesson_date.end_at
+%p
+  %b Capacity:
+  = @lesson_date.capacity
+%p
+  %b Url:
+  = @lesson_date.url
+
+= link_to 'Edit', edit_lesson_date_path(@lesson_date)
+\|
+= link_to 'Back', lesson_dates_path
