@@ -4,12 +4,16 @@
       %th ID
       %th 開始時間
       %th 終了時間
-      %th 人数
+      -# TODO: 予約テーブル作成時に予約人数を表示させる
+      -# %th 予約人数
+      %th 募集人数
 
   %tbody.align-middle
     - lesson_dates.each do |lesson_date|
       %tr
         %td= link_to lesson_date.id, admins_lesson_lesson_date_path(lesson_date.lesson, lesson_date)
-        %td= lesson_date.start_at
-        %td= lesson_date.end_at
+        %td= l(lesson_date.start_at)
+        %td= l(lesson_date.end_at)
+        -# TODO: 予約テーブル作成時に予約人数を表示させる
+        -# %td= lesson_date.reservations.count
         %td= lesson_date.capacity
