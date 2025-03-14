@@ -5,7 +5,11 @@
   .mt-3 講師: #{@lesson.instructor.name}
 
 .my-4
-  = render 'admins/lessons/lesson_dates/index', lesson_dates: @lesson.lesson_dates
+  %h2.fs-4 レッスン日時
+  - if @lesson.lesson_dates.present?
+    = render 'admins/lessons/lesson_dates/index', lesson_dates: @lesson.lesson_dates
+  - else
+    .fs-5 レッスン日時が登録されていません
 
 %div
   = link_to '編集', edit_admins_lesson_path(@lesson), class: 'btn btn-primary'
