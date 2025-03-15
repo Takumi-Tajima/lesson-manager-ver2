@@ -3,15 +3,17 @@ require 'rails_helper'
 RSpec.describe 'レッスンの日時', type: :system do
   let(:admin) { create(:admin) }
 
-  before { sign_in admin }
+  before do
+    travel_to '2025-03-15 09:00:00'
+    sign_in admin
+  end
 
-  describe 'レッスンの日時の一覧' do
+  describe 'レッスンの日時の一覧データ表示' do
     let(:lesson) { create(:lesson, id: 1, name: 'オンライン空手') }
 
     context 'レッスンの日時が登録されている場合' do
       before do
         create(:lesson_date, id: 1, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00', capacity: 5, url: 'https://www.example.com')
-        travel_to '2025-03-15 09:00:00'
       end
 
       it 'レッスンの日時の一覧データが表示されていること' do
@@ -48,6 +50,164 @@ RSpec.describe 'レッスンの日時', type: :system do
         expect(page).to have_selector 'h2', text: 'レッスン日時'
         expect(page).to have_content 'レッスン日時が登録されていません'
       end
+    end
+  end
+
+  describe 'レッスンの日時詳細データ表示' do
+    let(:lesson) { create(:lesson, name: 'オンライン柔道') }
+
+    before do
+      create(:lesson_date, id: 25, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00', capacity: 5, url: 'https://www.example.com')
+    end
+
+    it 'レッスンの日時の詳細データが表示されていること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'オンライン柔道'
+
+      click_on '25'
+
+      expect(page).to have_selector 'h1', text: 'オンライン柔道'
+      expect(page).to have_content '開始日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '終了日時: 2025年03月15日(土) 12時00分'
+      expect(page).to have_content '定員: 5'
+      expect(page).to have_content 'URL: https://www.example.com'
+      expect(page).to have_link '編集'
+      expect(page).to have_button '削除'
+    end
+  end
+
+  describe '新規登録機能' do
+    let(:lesson) { create(:lesson, name: 'ポルトガル語入門') }
+
+    it 'レッスンの日時を新規登録することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+
+      click_on '新しいレッスン日時を登録する'
+
+      expect(page).to have_selector 'h1', text: '新規レッスン日時登録'
+
+      fill_in '開始日時', with: '002025-03-15-09:30'
+      fill_in '終了日時', with: '002025-03-15-10:00'
+      fill_in '定員', with: 1
+      fill_in 'URL', with: 'https://www.example.test.com'
+
+      expect do
+        click_on '登録する'
+        expect(page).to have_content 'レッスン日時を登録しました'
+      end.to change(lesson.lesson_dates, :count).by(1)
+
+      expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
+      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '定員: 1'
+      expect(page).to have_content 'URL: https://www.example.test.com'
+    end
+
+    context '入力したないように不正な値があった場合' do
+      it 'エラーメッセージが表示され、データが登録されないこと' do
+        visit admins_lesson_path(lesson)
+
+        expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+
+        click_on '新しいレッスン日時を登録する'
+
+        expect(page).to have_selector 'h1', text: '新規レッスン日時登録'
+
+        fill_in '開始日時', with: '002025-03-15-08:59'
+        fill_in '終了日時', with: '002025-03-15-07:00'
+        fill_in '定員', with: 0
+        fill_in 'URL', with: 'このURLに来てねー'
+
+        expect do
+          click_on '登録する'
+        end.not_to change(lesson.lesson_dates, :count)
+
+        expect(page).to have_selector 'h1', text: '新規レッスン日時登録'
+
+        expect(page).to have_content '開始日時は現在時刻よりも先の日時を指定してください'
+        expect(page).to have_content '終了日時は開始日時よりも先の日時を指定してください'
+        expect(page).to have_content '定員は0より大きい値にしてください'
+        expect(page).to have_content 'URLは不正な値です'
+      end
+    end
+  end
+
+  describe '編集機能' do
+    let(:lesson) { create(:lesson, name: 'シュートフォーム改善') }
+
+    before do
+      create(:lesson_date, id: 30, lesson: lesson, start_at: '2025-03-15 09:30:00', end_at: '2025-03-15 10:00:00', capacity: 8, url: 'https://www.example.football.com')
+    end
+
+    it 'レッスンの日時を編集することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_content '2025年03月15日(土) 09時30分'
+
+      click_on '30'
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
+      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '定員: 8'
+      expect(page).to have_content 'URL: https://www.example.football.com'
+
+      click_on '編集'
+
+      expect(page).to have_selector 'h1', text: 'レッスン日時の編集'
+
+      fill_in '開始日時', with: '002025-03-18-09:30'
+      fill_in '終了日時', with: '002025-03-18-13:30'
+      fill_in '定員', with: 10
+      fill_in 'URL', with: 'https://www.example.soccer.com'
+
+      expect do
+        click_on '更新する'
+        expect(page).to have_content 'レッスン日時を編集しました。'
+      end.not_to change(lesson.lesson_dates, :count)
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_content '開始日時: 2025年03月18日(火) 09時30分'
+      expect(page).to have_content '終了日時: 2025年03月18日(火) 13時30分'
+      expect(page).to have_content '定員: 10'
+      expect(page).to have_content 'URL: https://www.example.soccer.com'
+    end
+  end
+
+  describe '削除機能' do
+    let(:lesson) { create(:lesson, name: '守備の極意') }
+
+    before do
+      create(:lesson_date, id: 30, lesson: lesson, start_at: '2025-03-15 09:30:00', end_at: '2025-03-15 10:00:00')
+    end
+
+    it 'レッスンの日時を削除することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content '2025年03月15日(土) 09時30分'
+
+      click_on '30'
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
+      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+
+      expect do
+        accept_confirm do
+          click_on '削除'
+        end
+        expect(page).to have_content 'レッスン日時を削除しました。'
+      end.to change(lesson.lesson_dates, :count).by(-1)
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content 'レッスン日時が登録されていません'
+      expect(page).not_to have_link '30'
+      expect(page).not_to have_content '2025年03月15日(土) 09時30分'
     end
   end
 end
