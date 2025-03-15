@@ -1,21 +1,13 @@
-%p#notice= notice
+%h1.fs-2= @lesson.name
 
-%p
-  %b Lesson:
-  = @lesson_date.lesson
-%p
-  %b Start at:
-  = @lesson_date.start_at
-%p
-  %b End at:
-  = @lesson_date.end_at
-%p
-  %b Capacity:
-  = @lesson_date.capacity
-%p
-  %b Url:
-  = @lesson_date.url
+.ms-auto
+  .mt-3 開始日時: #{l(@lesson_date.start_at)}
+  .mt-3 終了日時: #{l(@lesson_date.end_at)}
+  .mt-3 定員: #{@lesson_date.capacity}
+  -# TODO: 予約したユーザーの人数を追加する
+  -# .mt-3 定員: #{@lesson_date.reservations}
+  .mt-3 URL: #{@lesson_date.url}
 
-= link_to 'Edit', edit_lesson_date_path(@lesson_date)
-\|
-= link_to 'Back', lesson_dates_path
+.mt-5
+  = link_to '編集', edit_admins_lesson_lesson_date_path(@lesson, @lesson_date), class: 'btn btn-primary'
+  = button_to '削除', admins_lesson_lesson_date_path(@lesson, @lesson_date), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'

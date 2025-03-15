@@ -1,5 +1,5 @@
 class Admins::Lessons::LessonDatesController < Admins::ApplicationController
-  before_action :set_lesson, only: %i[show new create]
+  before_action :set_lesson, only: %i[show new create edit update destroy]
   before_action :set_lesson_date, only: %i[show edit update destroy]
 
   def show
@@ -16,7 +16,7 @@ class Admins::Lessons::LessonDatesController < Admins::ApplicationController
     @lesson_date = @lesson.lesson_dates.build(lesson_date_params)
 
     if @lesson_date.save
-      redirect_to @lesson_date, notice: t('controllers.common.created', model: 'レッスンの日時')
+      redirect_to admins_lesson_lesson_date_path(@lesson, @lesson_date), notice: t('controllers.common.created', model: 'レッスン日時')
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,7 +24,7 @@ class Admins::Lessons::LessonDatesController < Admins::ApplicationController
 
   def update
     if @lesson_date.update(lesson_date_params)
-      redirect_to @lesson_date, notice: 'Lesson date was successfully updated.', status: :see_other
+      redirect_to admins_lesson_lesson_date_path(@lesson, @lesson_date), notice: t('controllers.common.updated', model: 'レッスン日時'), status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class Admins::Lessons::LessonDatesController < Admins::ApplicationController
 
   def destroy
     @lesson_date.destroy!
-    redirect_to lesson_dates_path, notice: 'Lesson date was successfully destroyed.', status: :see_other
+    redirect_to admins_lesson_path(@lesson), notice: t('controllers.common.destroyed', model: 'レッスン日時'), status: :see_other
   end
 
   private
