@@ -6,6 +6,7 @@
 
 .my-4
   %h2.fs-4 レッスン日時
+  = link_to '新しいレッスン日時を登録する', new_admins_lesson_lesson_date_path(@lesson), class: 'btn btn-primary btn-sm'
   - if @lesson.lesson_dates.present?
     = render 'admins/lessons/lesson_dates/index', lesson_dates: @lesson.lesson_dates
   - else
