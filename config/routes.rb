@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
-  resources :lesson_dates
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
+
+  root 'lessons#index'
+
+  resources :lessons, only: %i[index show]
 
   namespace :admins do
     root 'lessons#index'
     resources :instructors, only: %i[index new create edit update destroy]
     resources :lessons, only: %i[index show new create edit update destroy] do
       resources :lesson_dates, only: %i[show new create edit update destroy], module: 'lessons'
+      resources :lesson_questions, only: %i[show new create edit update destroy], module: 'lessons'
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

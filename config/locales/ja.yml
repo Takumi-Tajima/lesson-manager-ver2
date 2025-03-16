@@ -1,6 +1,8 @@
 ja:
   activerecord:
     attributes:
+      lesson_question:
+        content: 質問内容
       lesson_date:
         start_at: 開始日時
         end_at: 終了日時

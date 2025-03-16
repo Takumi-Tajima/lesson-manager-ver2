@@ -1,0 +1,11 @@
+%table.table.mt-3
+  %thead
+    %tr
+      %th ID
+      %th 質問内容
+
+  %tbody
+    - lesson_questions.each do |lesson_question|
+      %tr
+        %td= link_to lesson_question.id, admins_lesson_lesson_question_path(lesson_question.lesson, lesson_question)
+        %td= truncate(lesson_question.content)
