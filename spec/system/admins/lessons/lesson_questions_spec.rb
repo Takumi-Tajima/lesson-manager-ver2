@@ -113,7 +113,7 @@ RSpec.describe 'レッスンの質問', type: :system do
 
     before { create(:lesson_question, id: 30, lesson: lesson, content: 'サッカーしたことありますか？') }
 
-    it 'レッスンの日時を編集することができること' do
+    it 'レッスンの質問を編集することができること' do
       visit admins_lesson_path(lesson)
 
       expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
@@ -138,6 +138,36 @@ RSpec.describe 'レッスンの質問', type: :system do
 
       expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
       expect(page).to have_content '質問の内容: ボール蹴ったことありますか？'
+    end
+  end
+
+  describe '削除機能' do
+    let(:lesson) { create(:lesson, name: '守備の極意') }
+
+    before { create(:lesson_question, id: 30, lesson: lesson, content: 'オフェンスとディフェンスどっちが良い？') }
+
+    it 'レッスンの質問を削除することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content 'オフェンスとディフェンスどっちが良い？'
+
+      click_on '30'
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content '質問の内容: オフェンスとディフェンスどっちが良い？'
+
+      expect do
+        accept_confirm do
+          click_on '削除'
+        end
+        expect(page).to have_content 'レッスンの質問を削除しました。'
+      end.to change(lesson.lesson_questions, :count).by(-1)
+
+      expect(page).to have_selector 'h1', text: '守備の極意'
+      expect(page).to have_content '質問が登録されていません'
+      expect(page).not_to have_link '30'
+      expect(page).not_to have_content 'オフェンスとディフェンスどっちが良い？'
     end
   end
 end
