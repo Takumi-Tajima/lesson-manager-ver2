@@ -62,4 +62,49 @@ RSpec.describe 'レッスンの質問', type: :system do
       expect(page).to have_button '削除'
     end
   end
+
+  describe '新規登録機能' do
+    let(:lesson) { create(:lesson, name: 'ポルトガル語入門') }
+
+    it 'レッスンの質問を新規登録することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+
+      click_on '新しい質問を登録する'
+
+      expect(page).to have_selector 'h1', text: 'レッスンの質問新規登録'
+
+      fill_in '質問内容', with: 'これが質問である'
+
+      expect do
+        click_on '登録する'
+        expect(page).to have_content 'レッスンの質問を登録しました'
+      end.to change(lesson.lesson_questions, :count).by(1)
+
+      expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+      expect(page).to have_content '質問の内容: これが質問である'
+    end
+
+    context '入力したないように不正な値があった場合' do
+      it 'エラーメッセージが表示され、データが登録されないこと' do
+        visit admins_lesson_path(lesson)
+
+        expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
+
+        click_on '新しい質問を登録する'
+
+        expect(page).to have_selector 'h1', text: 'レッスンの質問新規登録'
+
+        fill_in '質問内容', with: ''
+
+        expect do
+          click_on '登録する'
+        end.not_to change(lesson.lesson_questions, :count)
+
+        expect(page).to have_selector 'h1', text: 'レッスンの質問新規登録'
+        expect(page).to have_content '質問内容を入力してください'
+      end
+    end
+  end
 end

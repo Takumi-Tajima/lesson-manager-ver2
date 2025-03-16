@@ -6,14 +6,14 @@ class Admins::Lessons::LessonQuestionsController < Admins::ApplicationController
   end
 
   def new
-    @lesson_question = LessonQuestion.new
+    @lesson_question = @lesson.lesson_questions.build
   end
 
   def edit
   end
 
   def create
-    @lesson_question = LessonQuestion.new(lesson_question_params)
+    @lesson_question = @lesson.lesson_questions.build(lesson_question_params)
 
     if @lesson_question.save
       redirect_to admins_lesson_lesson_question_path(@lesson, @lesson_question), notice: t('controllers.common.created', model: 'レッスンの質問')
