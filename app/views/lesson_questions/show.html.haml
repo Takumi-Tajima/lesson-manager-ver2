@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Lesson:
+  = @lesson_question.lesson
+%p
+  %b Content:
+  = @lesson_question.content
+
+= link_to 'Edit', edit_lesson_question_path(@lesson_question)
+\|
+= link_to 'Back', lesson_questions_path
