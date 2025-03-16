@@ -1,6 +1,10 @@
 ja:
   activerecord:
     attributes:
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
       lesson_question:
         content: 質問内容
       lesson_date:
