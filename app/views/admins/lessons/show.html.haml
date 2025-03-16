@@ -12,6 +12,14 @@
   - else
     .fs-5 レッスン日時が登録されていません
 
+.my-4
+  %h2.fs-4 レッスンの質問
+  = link_to '新しい質問を登録する', new_admins_lesson_lesson_question_path(@lesson), class: 'btn btn-primary btn-sm'
+  - if @lesson.lesson_questions.present?
+    = render 'admins/lessons/lesson_questions/index', lesson_questions: @lesson.lesson_questions.default_order
+  - else
+    .fs-5 質問が登録されていません
+
 %div
   = link_to '編集', edit_admins_lesson_path(@lesson), class: 'btn btn-primary'
   = button_to '削除', admins_lesson_path(@lesson), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
