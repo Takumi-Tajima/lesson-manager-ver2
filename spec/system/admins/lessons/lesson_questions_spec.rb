@@ -43,4 +43,23 @@ RSpec.describe 'レッスンの質問', type: :system do
       end
     end
   end
+
+  describe 'レッスンの質問詳細データ表示' do
+    let(:lesson) { create(:lesson, name: 'オンライン柔道') }
+
+    before { create(:lesson_question, id: 25, lesson: lesson, content: 'これが質問である') }
+
+    it 'レッスンの質問の詳細データが表示されていること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'オンライン柔道'
+
+      click_on '25'
+
+      expect(page).to have_selector 'h1', text: 'オンライン柔道'
+      expect(page).to have_content '質問の内容: これが質問である'
+      expect(page).to have_link '編集'
+      expect(page).to have_button '削除'
+    end
+  end
 end
