@@ -3,3 +3,16 @@
 .ms-auto
   .mt-3 レッスン詳細: #{@lesson.description}
   .mt-3 講師: #{@lesson.instructor.name}
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th ID
+      %th 開始日時
+      %th 終了日時
+  %tbody
+    - @lesson.lesson_dates.future_lessons.ordered_by_start_time.each do |lesson_date|
+      %tr
+        %td= lesson_date.id
+        %td= l(lesson_date.start_at)
+        %td= l(lesson_date.end_at)

@@ -8,6 +8,8 @@ class LessonDate < ApplicationRecord
   belongs_to :lesson
 
   scope :default_order, -> { order(:id) }
+  scope :ordered_by_start_time, -> { order(start_at: :asc) }
+  scope :future_lessons, -> { where('start_at > ?', Time.current) }
 
   private
 
