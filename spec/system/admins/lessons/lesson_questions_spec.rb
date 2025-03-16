@@ -107,4 +107,37 @@ RSpec.describe 'レッスンの質問', type: :system do
       end
     end
   end
+
+  describe '編集機能' do
+    let(:lesson) { create(:lesson, name: 'シュートフォーム改善') }
+
+    before { create(:lesson_question, id: 30, lesson: lesson, content: 'サッカーしたことありますか？') }
+
+    it 'レッスンの日時を編集することができること' do
+      visit admins_lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_selector 'h2', text: 'レッスンの質問'
+      expect(page).to have_content 'サッカーしたことありますか？'
+
+      click_on '30'
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_content '質問の内容: サッカーしたことありますか？'
+
+      click_on '編集'
+
+      expect(page).to have_selector 'h1', text: 'レッスンの質問編集'
+
+      fill_in '質問内容', with: 'ボール蹴ったことありますか？'
+
+      expect do
+        click_on '更新する'
+        expect(page).to have_content 'レッスンの質問を編集しました。'
+      end.not_to change(lesson.lesson_questions, :count)
+
+      expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
+      expect(page).to have_content '質問の内容: ボール蹴ったことありますか？'
+    end
+  end
 end
