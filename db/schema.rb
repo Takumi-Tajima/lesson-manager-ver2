@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_12_231729) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_14_044338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,6 +36,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_231729) do
     t.index ["email"], name: "index_instructors_on_email", unique: true
   end
 
+  create_table "lesson_dates", force: :cascade do |t|
+    t.bigint "lesson_id", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
+    t.integer "capacity", default: 1, null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_dates_on_lesson_id"
+  end
+
   create_table "lessons", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -45,5 +56,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_231729) do
     t.index ["instructor_id"], name: "index_lessons_on_instructor_id"
   end
 
+  add_foreign_key "lesson_dates", "lessons"
   add_foreign_key "lessons", "instructors"
 end
