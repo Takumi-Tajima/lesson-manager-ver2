@@ -6,6 +6,10 @@ Rails.application.routes.draw do
 
   resources :lessons, only: %i[index show]
 
+  scope module: :users do
+    resources :reservations, only: %i[create]
+  end
+
   namespace :admins do
     root 'lessons#index'
     resources :instructors, only: %i[index new create edit update destroy]

@@ -13,6 +13,7 @@
       %th 開始日時
       %th 終了日時
       %th 定員
+      %th
   %tbody
     - @lesson.lesson_dates.future_lessons.ordered_by_start_time.each do |lesson_date|
       %tr
@@ -20,3 +21,4 @@
         %td= l(lesson_date.start_at)
         %td= l(lesson_date.end_at)
         %td= lesson_date.capacity
+        %td= button_to '予約', reservations_path(lesson_id: @lesson, lesson_date_id: lesson_date), method: :post, class: 'btn btn-primary btn-sm'
