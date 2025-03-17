@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_16_225749) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_17_135547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_225749) do
     t.index ["instructor_id"], name: "index_lessons_on_instructor_id"
   end
 
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "lesson_date_id", null: false
+    t.bigint "user_id", null: false
+    t.string "lesson_name", null: false
+    t.string "instructor_name", null: false
+    t.text "lesson_description", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_date_id", "user_id"], name: "index_reservations_on_lesson_date_id_and_user_id", unique: true
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
@@ -87,4 +101,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_225749) do
   add_foreign_key "lesson_dates", "lessons"
   add_foreign_key "lesson_questions", "lessons"
   add_foreign_key "lessons", "instructors"
+  add_foreign_key "reservations", "lesson_dates"
+  add_foreign_key "reservations", "users"
 end
