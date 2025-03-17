@@ -2,6 +2,8 @@
   .container-fluid
     .d-flex.align-items-center
       .navbar-brand.fs-2= link_to 'LessonManager', root_path, class: 'text-decoration-none text-white'
+    %ul.navbar-nav
+      %li.nav-item= link_to '予約一覧', reservations_path, class: 'nav-link text-white fs-5'
     %ul.navbar-nav.ms-auto
       - if user_signed_in?
         %li.nav-item.d-flex

@@ -10,7 +10,8 @@ class User < ApplicationRecord
       lesson_name: lesson_date.lesson.name,
       lesson_description: lesson_date.lesson.description,
       start_at: lesson_date.start_at,
-      end_at: lesson_date.end_at
+      end_at: lesson_date.end_at,
+      url: lesson_date.url
     )
   end
 end

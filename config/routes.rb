@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :lessons, only: %i[index show]
 
   scope module: :users do
-    resources :reservations, only: %i[create]
+    resources :reservations, only: %i[index show create destroy]
   end
 
   namespace :admins do

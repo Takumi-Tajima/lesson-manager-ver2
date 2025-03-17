@@ -1,0 +1,21 @@
+%h1.fs-2 予約一覧
+
+- if @reservations.exists?
+  %table.table.mt-3
+    %thead
+      %tr
+        %th ID
+        %th レッスン名
+        %th 講師
+        %th 開始日時
+        %th 終了日時
+    %tbody
+      - @reservations.each do |reservation|
+        %tr
+          %td= link_to reservation.id, reservation_path(reservation)
+          %td= reservation.lesson_name
+          %td= reservation.instructor_name
+          %td= l(reservation.start_at)
+          %td= l(reservation.end_at)
+- else
+  .fs-3 予約はありません
