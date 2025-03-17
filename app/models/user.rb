@@ -6,7 +6,7 @@ class User < ApplicationRecord
   def create_reservation!(lesson_date)
     reservations.create!(
       lesson_date: lesson_date,
-      instructor_name: lesson_date.instructor.name,
+      instructor_name: lesson_date.lesson.instructor.name,
       lesson_name: lesson_date.lesson.name,
       lesson_description: lesson_date.lesson.description,
       start_at: lesson_date.start_at,
