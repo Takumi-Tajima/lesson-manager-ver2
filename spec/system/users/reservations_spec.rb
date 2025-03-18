@@ -42,6 +42,30 @@ RSpec.describe 'レッスンの予約', type: :system do
       expect(page).to have_content '2025年03月20日(木) 09時00分'
       expect(page).to have_content '2025年03月20日(木) 12時00分'
     end
+
+    context 'すでに同じ時間帯でレッスンを予約している場合' do
+      before { create(:reservation, user: user, start_at: '2025-03-20 09:00:00', end_at: '2025-03-20 12:00:00') }
+
+      it 'レッスンを予約できないこと' do
+        visit lesson_path(lesson)
+
+        expect(page).to have_selector 'h1', text: '英会話'
+        expect(page).to have_selector 'h2', text: 'レッスンの開催日'
+
+        expect do
+          click_on '予約'
+          expect(page).to have_content '予約に失敗しました。'
+        end.not_to change(user.reservations, :count)
+
+        within '.navbar' do
+          click_on '予約一覧'
+        end
+
+        expect(page).to have_selector 'h1', text: '予約一覧'
+        expect(page).not_to have_content '英会話'
+        expect(page).not_to have_content '田島 匠'
+      end
+    end
   end
 
   describe '詳細画面のデータ表示' do
@@ -84,7 +108,7 @@ RSpec.describe 'レッスンの予約', type: :system do
       create(:reservation, id: 8, user: user, lesson_date: lesson_date, lesson_name: 'オンラインボクシング')
     end
 
-    it '予約をキャンセルができ、同じ予約はできないこと' do
+    it '予約をキャンセルができる' do
       visit reservations_path
 
       expect(page).to have_selector 'h1', text: '予約一覧'
@@ -104,16 +128,6 @@ RSpec.describe 'レッスンの予約', type: :system do
       expect(page).to have_selector 'h1', text: '予約一覧'
       expect(page).to have_content '予約はありません'
       expect(page).not_to have_content 'オンラインボクシング'
-
-      visit lesson_path(lesson)
-
-      expect(page).to have_selector 'h1', text: 'オンラインボクシング'
-
-      tr = find('tr', text: '2025年03月20日(木) 12時00分')
-
-      within tr do
-        expect(page).to have_content '予約済み'
-      end
     end
   end
 end
