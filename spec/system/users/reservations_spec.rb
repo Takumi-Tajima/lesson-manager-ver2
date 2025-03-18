@@ -75,4 +75,35 @@ RSpec.describe 'レッスンの予約', type: :system do
       expect(page).to have_content 'URL: https://example.com'
     end
   end
+
+  describe '予約のキャンセル' do
+    let(:lesson) { create(:lesson) }
+    let(:lesson_date) { create(:lesson_date, lesson: lesson) }
+
+    before do
+      create(:reservation, id: 8, user: user, lesson_date: lesson_date, lesson_name: 'オンラインボクシング')
+    end
+
+    it '予約をキャンセルできる' do
+      visit reservations_path
+
+      expect(page).to have_selector 'h1', text: '予約一覧'
+      expect(page).to have_content 'オンラインボクシング'
+
+      click_on '8'
+
+      expect(page).to have_selector 'h1', text: 'オンラインボクシング'
+
+      expect do
+        accept_confirm do
+          click_on 'キャンセル'
+        end
+        expect(page).to have_content '予約を削除しました。'
+      end.to change(user.reservations, :count).by(-1)
+
+      expect(page).to have_selector 'h1', text: '予約一覧'
+      expect(page).to have_content '予約はありません'
+      expect(page).not_to have_content 'オンラインボクシング'
+    end
+  end
 end

@@ -7,4 +7,4 @@
   .mt-3 終了日時: #{l(@reservation.end_at)}
   .mt-3 URL: #{@reservation.url}
 
-.mt-5= button_to '削除', reservation_path(@reservation), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
+.mt-5= button_to 'キャンセル', reservation_path(@reservation), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'

@@ -14,4 +14,9 @@ class Users::ReservationsController < Users::ApplicationController
     current_user.create_reservation!(lesson_date)
     redirect_to lesson_path(lesson), notice: t('controllers.common.created', model: '予約')
   end
+
+  def destroy
+    current_user.reservations.find(params[:id]).destroy!
+    redirect_to reservations_path, notice: t('controllers.common.destroyed', model: '予約')
+  end
 end

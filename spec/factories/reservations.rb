@@ -2,10 +2,10 @@ FactoryBot.define do
   factory :reservation do
     lesson_date
     user
-    lesson_name { 'MyString' }
-    instructor_name { 'MyString' }
-    lesson_description { 'MyText' }
-    start_at { '2025-03-17 22:55:47' }
-    end_at { '2025-03-17 22:55:47' }
+    lesson_name { Faker::Lorem.word }
+    instructor_name { Faker::Name.name }
+    lesson_description { Faker::Lorem.sentence }
+    start_at { Faker::Time.forward }
+    end_at { start_at + 30.minutes }
   end
 end
