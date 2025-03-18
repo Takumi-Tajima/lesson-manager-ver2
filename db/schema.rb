@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_17_233806) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_18_230135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,6 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_17_233806) do
     t.string "url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reservations_count", default: 0, null: false
     t.index ["lesson_id"], name: "index_lesson_dates_on_lesson_id"
   end
 

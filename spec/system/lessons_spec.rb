@@ -27,6 +27,7 @@ RSpec.describe 'ゲストのレッスン閲覧', type: :system do
       expect(page).to have_selector 'h2', text: 'レッスンの開催日'
       expect(page).to have_content '開始日時'
       expect(page).to have_content '終了日時'
+      expect(page).to have_content '予約人数'
       expect(page).to have_content '定員'
       expect(page).to have_content '2025年03月17日(月) 09時00分'
       expect(page).to have_content '2025年03月17日(月) 12時00分'

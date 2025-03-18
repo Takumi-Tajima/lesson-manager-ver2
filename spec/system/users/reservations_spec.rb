@@ -66,6 +66,21 @@ RSpec.describe 'レッスンの予約', type: :system do
         expect(page).not_to have_content '田島 匠'
       end
     end
+
+    context '予約定員が満員の場合' do
+      let(:lesson2) { create(:lesson, name: 'スペイン語') }
+      let(:lesson_date) { create(:lesson_date, capacity: 1, lesson: lesson2) }
+
+      before { create(:reservation, lesson_date: lesson_date) }
+
+      it 'レッスンを予約できないこと' do
+        visit lesson_path(lesson2)
+
+        expect(page).to have_selector 'h1', text: 'スペイン語'
+        expect(page).to have_selector 'h2', text: 'レッスンの開催日'
+        expect(page).to have_content '満員'
+      end
+    end
   end
 
   describe '詳細画面のデータ表示' do

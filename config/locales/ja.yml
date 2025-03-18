@@ -29,6 +29,7 @@ ja:
             lesson_date:
               base:
                 validate_time_slot_uniqueness: '別のレッスンと時間が重複しています'
+                validate_capacity: 'このレッスン日時は予約枠が埋まっています'
         lesson_date:
           attributes:
             start_at:

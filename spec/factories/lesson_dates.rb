@@ -3,7 +3,7 @@ FactoryBot.define do
     lesson
     start_at { Faker::Time.forward }
     end_at { start_at + 30.minutes }
-    capacity { 1 }
+    capacity { 5 }
     url { 'https://www.example.com' }
   end
 end

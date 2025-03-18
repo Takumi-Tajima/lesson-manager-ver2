@@ -12,6 +12,7 @@
       %th ID
       %th 開始日時
       %th 終了日時
+      %th 予約人数
       %th 定員
       %th
   %tbody
@@ -20,9 +21,6 @@
         %td= lesson_date.id
         %td= l(lesson_date.start_at)
         %td= l(lesson_date.end_at)
+        %td= lesson_date.reservations_count
         %td= lesson_date.capacity
-        %td
-          - if user_signed_in? && current_user.reservations.exists?(lesson_date_id: lesson_date.id)
-            予約済み
-          - else
-            = button_to '予約', reservations_path(lesson_id: @lesson, lesson_date_id: lesson_date), method: :post, class: 'btn btn-primary btn-sm'
+        %td= render 'reservation_button', lesson_date: lesson_date, lesson: @lesson

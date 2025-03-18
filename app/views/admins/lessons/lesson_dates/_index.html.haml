@@ -4,8 +4,7 @@
       %th ID
       %th 開始日時
       %th 終了日時
-      -# TODO: 予約テーブル作成時に予約人数を表示させる
-      -# %th 予約人数
+      %th 予約人数
       %th 募集人数
 
   %tbody.align-middle
@@ -14,6 +13,5 @@
         %td= link_to lesson_date.id, admins_lesson_lesson_date_path(lesson_date.lesson, lesson_date)
         %td= l(lesson_date.start_at)
         %td= l(lesson_date.end_at)
-        -# TODO: 予約テーブル作成時に予約人数を表示させる
-        -# %td= lesson_date.reservations.count
+        %td= lesson_date.reservations_count
         %td= lesson_date.capacity
