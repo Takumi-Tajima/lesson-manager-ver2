@@ -77,14 +77,14 @@ RSpec.describe 'レッスンの予約', type: :system do
   end
 
   describe '予約のキャンセル' do
-    let(:lesson) { create(:lesson) }
-    let(:lesson_date) { create(:lesson_date, lesson: lesson) }
+    let(:lesson) { create(:lesson, name: 'オンラインボクシング') }
+    let(:lesson_date) { create(:lesson_date, lesson: lesson, start_at: '2025-03-20 12:00:00', end_at: '2025-03-20 13:00:00') }
 
     before do
       create(:reservation, id: 8, user: user, lesson_date: lesson_date, lesson_name: 'オンラインボクシング')
     end
 
-    it '予約をキャンセルできる' do
+    it '予約をキャンセルができ、同じ予約はできないこと' do
       visit reservations_path
 
       expect(page).to have_selector 'h1', text: '予約一覧'
@@ -104,6 +104,16 @@ RSpec.describe 'レッスンの予約', type: :system do
       expect(page).to have_selector 'h1', text: '予約一覧'
       expect(page).to have_content '予約はありません'
       expect(page).not_to have_content 'オンラインボクシング'
+
+      visit lesson_path(lesson)
+
+      expect(page).to have_selector 'h1', text: 'オンラインボクシング'
+
+      tr = find('tr', text: '2025年03月20日(木) 12時00分')
+
+      within tr do
+        expect(page).to have_content '予約済み'
+      end
     end
   end
 end

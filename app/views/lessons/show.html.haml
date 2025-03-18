@@ -21,4 +21,8 @@
         %td= l(lesson_date.start_at)
         %td= l(lesson_date.end_at)
         %td= lesson_date.capacity
-        %td= button_to '予約', reservations_path(lesson_id: @lesson, lesson_date_id: lesson_date), method: :post, class: 'btn btn-primary btn-sm'
+        %td
+          - if current_user.reservations.exists?(lesson_date_id: lesson_date.id)
+            = button_to '予約', reservations_path(lesson_id: @lesson, lesson_date_id: lesson_date), method: :post, class: 'btn btn-primary btn-sm'
+          - else
+            予約済み
