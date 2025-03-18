@@ -1,5 +1,7 @@
 ja:
   controllers:
+    reservation:
+      failed: "予約に失敗しました。"
     common:
       created: "%{model}を登録しました。"
       updated: "%{model}を編集しました。"

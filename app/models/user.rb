@@ -3,8 +3,8 @@ class User < ApplicationRecord
 
   has_many :reservations, dependent: :destroy
 
-  def create_reservation!(lesson_date)
-    reservations.create!(
+  def build_reservation(lesson_date)
+    reservations.build(
       lesson_date: lesson_date,
       instructor_name: lesson_date.lesson.instructor.name,
       lesson_name: lesson_date.lesson.name,

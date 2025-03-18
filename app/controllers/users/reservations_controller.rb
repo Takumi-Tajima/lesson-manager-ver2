@@ -11,8 +11,13 @@ class Users::ReservationsController < Users::ApplicationController
     lesson = Lesson.find(params.expect(:lesson_id))
     lesson_date = lesson.lesson_dates.find(params.expect(:lesson_date_id))
 
-    current_user.create_reservation!(lesson_date)
-    redirect_to lesson_path(lesson), notice: t('controllers.common.created', model: '予約')
+    reservation = current_user.build_reservation(lesson_date)
+
+    if reservation.save
+      redirect_to lesson_path(lesson), notice: t('controllers.common.created', model: '予約')
+    else
+      redirect_to lesson_path(lesson), alert: t('controllers.reservation.failed')
+    end
   end
 
   def destroy

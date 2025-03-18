@@ -24,6 +24,11 @@ ja:
         password: パスワード
     errors:
       models:
+        reservation:
+          attributes:
+            lesson_date:
+              base:
+                validate_time_slot_uniqueness: '別のレッスンと時間が重複しています'
         lesson_date:
           attributes:
             start_at:
