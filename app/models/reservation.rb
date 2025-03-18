@@ -7,6 +7,7 @@ class Reservation < ApplicationRecord
   validates :lesson_description, presence: true
   validates :start_at, presence: true
   validates :end_at, presence: true
+  validates :user_id, uniqueness: { scope: :lesson_date_id }
 
   scope :default_order, -> { order(:id) }
   scope :futures, -> { where('start_at > ?', Time.current) }
