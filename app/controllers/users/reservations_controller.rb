@@ -7,11 +7,18 @@ class Users::ReservationsController < Users::ApplicationController
     @reservation = current_user.reservations.find(params[:id])
   end
 
+  def new
+    lesson = Lesson.find(params[:lesson_id])
+    lesson_date = lesson.lesson_dates.find(params[:lesson_date_id])
+
+    @reservation = current_user.build_reservation(lesson_date)
+  end
+
   def create
     lesson = Lesson.find(params.expect(:lesson_id))
     lesson_date = lesson.lesson_dates.find(params.expect(:lesson_date_id))
 
-    reservation = current_user.build_reservation(lesson_date)
+    @reservation = current_user.reservations.build(lesson_date: lesson_date)
 
     if reservation.save
       redirect_to lesson_path(lesson), notice: t('controllers.common.created', model: '予約')

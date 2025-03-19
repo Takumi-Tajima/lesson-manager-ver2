@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_18_230135) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_19_012416) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_18_230135) do
     t.datetime "updated_at", null: false
     t.integer "reservations_count", default: 0, null: false
     t.index ["lesson_id"], name: "index_lesson_dates_on_lesson_id"
+  end
+
+  create_table "lesson_question_answers", force: :cascade do |t|
+    t.bigint "reservation_id", null: false
+    t.string "question"
+    t.string "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reservation_id"], name: "index_lesson_question_answers_on_reservation_id"
   end
 
   create_table "lesson_questions", force: :cascade do |t|
@@ -101,6 +110,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_18_230135) do
   end
 
   add_foreign_key "lesson_dates", "lessons"
+  add_foreign_key "lesson_question_answers", "reservations"
   add_foreign_key "lesson_questions", "lessons"
   add_foreign_key "lessons", "instructors"
   add_foreign_key "reservations", "lesson_dates"

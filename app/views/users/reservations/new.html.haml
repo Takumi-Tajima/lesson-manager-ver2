@@ -1,0 +1,12 @@
+%p= @reservation.lesson_name
+%p= @reservation.instructor_name
+%p= l(@reservation.start_at)
+%p= l(@reservation.end_at)
+%p= @reservation.url
+
+= simple_form_for(@reservation) do |f|
+  - f.fields_for :lesson_question_answers do |lesson_question_answer|
+    - @reservation.lesson_date.lesson.lesson_questions.each do |lesson_question|
+      = lesson_question_answer.input :question, as: :hidden, value: lesson_question.content
+      = lesson_question_answer.input :answer, label: lesson_question.content
+      = f.button :submit

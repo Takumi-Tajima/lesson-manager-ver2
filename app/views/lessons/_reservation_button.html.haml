@@ -3,4 +3,4 @@
 - elsif lesson_date.capacity <= lesson_date.reservations_count
   満員
 - else
-  = button_to '予約', reservations_path(lesson_id: lesson, lesson_date_id: lesson_date), method: :post, class: 'btn btn-primary btn-sm'
+  = link_to '予約', new_reservation_path(lesson_id: lesson, lesson_date_id: lesson_date), class: 'btn btn-primary btn-sm'
