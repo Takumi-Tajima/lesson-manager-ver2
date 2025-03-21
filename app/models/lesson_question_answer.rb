@@ -1,3 +1,3 @@
 class LessonQuestionAnswer < ApplicationRecord
-  belongs_to :reservation_id
+  belongs_to :reservation
 end

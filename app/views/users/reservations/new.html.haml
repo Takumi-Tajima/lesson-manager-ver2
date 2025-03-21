@@ -1,12 +1,31 @@
-%p= @reservation.lesson_name
-%p= @reservation.instructor_name
-%p= l(@reservation.start_at)
-%p= l(@reservation.end_at)
-%p= @reservation.url
+%h1.fs-2 予約確認
+
+.card.my-4
+  .card-header
+    %strong= @reservation.lesson_name
+  .card-body
+    %p.card-text= @reservation.lesson_description
+    %p
+      %strong 講師:
+      = @reservation.instructor_name
+    %p
+      %strong 開始時間:
+      = l(@reservation.start_at)
+    %p
+      %strong 終了時間:
+      = l(@reservation.end_at)
 
 = simple_form_for(@reservation) do |f|
-  - f.fields_for :lesson_question_answers do |lesson_question_answer|
-    - @reservation.lesson_date.lesson.lesson_questions.each do |lesson_question|
-      = lesson_question_answer.input :question, as: :hidden, value: lesson_question.content
-      = lesson_question_answer.input :answer, label: lesson_question.content
-      = f.button :submit
+  = f.input :lesson_date_id, as: :hidden, input_html: { value: @reservation.lesson_date_id }
+  = f.input :instructor_name, as: :hidden, input_html: { value: @reservation.instructor_name }
+  = f.input :lesson_name , as: :hidden, input_html: { value: @reservation.lesson_name }
+  = f.input :lesson_description, as: :hidden, input_html: { value: @reservation.lesson_description }
+  = f.input :start_at, as: :hidden, input_html: { value: @reservation.start_at }
+  = f.input :end_at, as: :hidden, input_html: { value: @reservation.end_at }
+  = f.input :url, as: :hidden, input_html: { value: @reservation.url }
+
+  %h1.fs-2 質問事項
+  = f.fields_for :lesson_question_answers do |lesson_question_answer|
+    = lesson_question_answer.input :question, as: :hidden, input_html: { value: lesson_question_answer.object.question }
+    = lesson_question_answer.input :answer, label:  lesson_question_answer.object.question
+  = f.button :submit, class: 'btn btn-primary', value: '予約する'
