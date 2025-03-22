@@ -4,8 +4,7 @@
   .mt-3 開始日時: #{l(@lesson_date.start_at)}
   .mt-3 終了日時: #{l(@lesson_date.end_at)}
   .mt-3 定員: #{@lesson_date.capacity}
-  -# TODO: 予約したユーザーの人数を追加する
-  -# .mt-3 定員: #{@lesson_date.reservations}
+  .mt-3 予約人数: #{@lesson_date.reservations_count}
   .mt-3 URL: #{@lesson_date.url}
 
 .mt-5

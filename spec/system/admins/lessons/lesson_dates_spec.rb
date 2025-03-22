@@ -31,8 +31,7 @@ RSpec.describe 'レッスンの日時', type: :system do
         expect(page).to have_content 'ID'
         expect(page).to have_content '開始日時'
         expect(page).to have_content '終了日時'
-        # TODO: 予約機能実装時にコメントアウトを外す
-        # expect(page).to have_content '予約人数'
+        expect(page).to have_content '予約人数'
         expect(page).to have_content '募集人数'
         expect(page).to have_link '1'
         expect(page).to have_content '5'
@@ -68,6 +67,7 @@ RSpec.describe 'レッスンの日時', type: :system do
       expect(page).to have_content '開始日時:'
       expect(page).to have_content '終了日時:'
       expect(page).to have_content '定員: 5'
+      expect(page).to have_content '予約人数: 0'
       expect(page).to have_content 'URL: https://www.example.com'
       expect(page).to have_link '編集'
       expect(page).to have_button '削除'
