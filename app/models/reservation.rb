@@ -15,7 +15,8 @@ class Reservation < ApplicationRecord
   validate :validate_capacity
 
   scope :default_order, -> { order(:id) }
-  scope :futures, -> { where('start_at > ?', Time.current) }
+  scope :futures, -> { where('end_at > ?', Time.current) }
+  scope :past, -> { where('end_at < ?', Time.current) }
   scope :order_by_start, -> { order(:start_at) }
 
   private

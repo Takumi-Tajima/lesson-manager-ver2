@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :lessons, only: %i[index show]
 
   scope module: :users do
+    resources :past_reservations, only: %i[index]
     resources :reservations, only: %i[index show new create destroy] do
       resource :lesson_question_answers, only: %i[edit update], module: 'reservations'
     end

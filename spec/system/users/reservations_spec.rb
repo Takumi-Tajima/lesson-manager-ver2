@@ -108,6 +108,45 @@ RSpec.describe 'レッスンの予約', type: :system do
     end
   end
 
+  describe '過去に予約したレッスンの閲覧' do
+    let(:lesson) { create(:lesson) }
+    let(:lesson_date) { create(:lesson_date, lesson: lesson) }
+    let(:reservation) { create(:reservation, id: 42, user: user, lesson_name: 'オンライン囲碁', lesson_date: lesson_date) }
+
+    before { reservation.update(start_at: Time.current - 2.hours, end_at: Time.current - 1.hour) }
+
+    it '過去のレッスン情報を閲覧することができる' do
+      visit root_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+      within '.navbar' do
+        click_on '予約一覧'
+      end
+
+      expect(page).to have_selector 'h1', text: '予約一覧'
+      expect(page).to have_content '予約はありません'
+      expect(page).not_to have_content 'オンライン囲碁'
+
+      visit root_path
+
+      expect(page).to have_selector 'h1', text: 'レッスン一覧'
+
+      within '.navbar' do
+        click_on '予約履歴'
+      end
+
+      expect(page).to have_selector 'h1', text: '予約履歴一覧'
+      expect(page).to have_content 'オンライン囲碁'
+
+      click_on '42'
+
+      expect(page).to have_selector 'h1', text: 'オンライン囲碁'
+      expect(page).not_to have_button 'キャンセル'
+      expect(page).not_to have_link '回答内容を編集する'
+    end
+  end
+
   describe '予約のキャンセル' do
     let(:lesson) { create(:lesson, name: 'オンラインボクシング') }
     let(:lesson_date) { create(:lesson_date, lesson: lesson) }

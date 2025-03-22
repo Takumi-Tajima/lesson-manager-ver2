@@ -14,5 +14,6 @@
       %h2.fs-5 質問: #{lesson_qa.question}
       .fs-5 回答: #{lesson_qa.answer}
 
-.mt-5= button_to 'キャンセル', reservation_path(@reservation), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
-.mt-3= link_to '回答内容を編集する', edit_reservation_lesson_question_answers_path(@reservation), class: 'btn btn-primary'
+- if @reservation.start_at > Time.current
+  .mt-5= button_to 'キャンセル', reservation_path(@reservation), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
+  .mt-3= link_to '回答内容を編集する', edit_reservation_lesson_question_answers_path(@reservation), class: 'btn btn-primary'
