@@ -23,14 +23,39 @@ RSpec.describe LessonDate, type: :model do
     let(:lesson) { create(:lesson) }
 
     before do
-      travel_to '2025-03-15 09:00:00'
-      create(:lesson_date, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00')
+      create(:lesson_date, lesson: lesson, start_at: Time.current, end_at: Time.current + 2.hours)
+    end
+
+    it 'レッスン日時が被っていない場合は許可すること' do
+      lesson_date = build(:lesson_date, lesson: lesson, start_at: Time.current + 5.hours, end_at: Time.current + 6.hours)
+      expect(lesson_date).to be_valid
     end
 
     it '同じレッスン内で重複した日時帯を許可しないこと' do
-      lesson_date = build(:lesson_date, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00')
-      expect(lesson_date).not_to be_valid
-      expect(lesson_date.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
+      # 同じ時間帯 (完全一致)
+      lesson_date1 = build(:lesson_date, lesson: lesson, start_at: Time.current, end_at: Time.current + 2.hours)
+      expect(lesson_date1).not_to be_valid
+      expect(lesson_date1.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
+
+      # 開始時間が既存の時間帯内
+      lesson_date2 = build(:lesson_date, lesson: lesson, start_at: Time.current + 1.hour, end_at: Time.current + 3.hours)
+      expect(lesson_date2).not_to be_valid
+      expect(lesson_date2.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
+
+      # 終了時間が既存の時間帯内
+      lesson_date3 = build(:lesson_date, lesson: lesson, start_at: Time.current - 1.hour, end_at: Time.current + 1.hour)
+      expect(lesson_date3).not_to be_valid
+      expect(lesson_date3.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
+
+      # 既存の時間帯を包含
+      lesson_date4 = build(:lesson_date, lesson: lesson, start_at: Time.current - 1.hour, end_at: Time.current + 3.hours)
+      expect(lesson_date4).not_to be_valid
+      expect(lesson_date4.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
+
+      # 既存の時間帯に包含される
+      lesson_date5 = build(:lesson_date, lesson: lesson, start_at: Time.current + 30.minutes, end_at: Time.current + 1.hour)
+      expect(lesson_date5).not_to be_valid
+      expect(lesson_date5.errors).to be_of_kind(:base, :validate_time_slot_uniqueness)
     end
   end
 end

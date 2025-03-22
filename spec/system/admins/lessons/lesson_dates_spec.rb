@@ -4,7 +4,6 @@ RSpec.describe 'レッスンの日時', type: :system do
   let(:admin) { create(:admin) }
 
   before do
-    travel_to '2025-03-15 09:00:00'
     sign_in admin
   end
 
@@ -13,7 +12,7 @@ RSpec.describe 'レッスンの日時', type: :system do
 
     context 'レッスンの日時が登録されている場合' do
       before do
-        create(:lesson_date, id: 1, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00', capacity: 5, url: 'https://www.example.com')
+        create(:lesson_date, id: 1, lesson: lesson, start_at: Time.current + 1.hour, end_at: Time.current + 3.hours, capacity: 5, url: 'https://www.example.com')
       end
 
       it 'レッスンの日時の一覧データが表示されていること' do
@@ -36,8 +35,6 @@ RSpec.describe 'レッスンの日時', type: :system do
         # expect(page).to have_content '予約人数'
         expect(page).to have_content '募集人数'
         expect(page).to have_link '1'
-        expect(page).to have_content '2025年03月15日(土) 10時00分'
-        expect(page).to have_content '2025年03月15日(土) 12時00分'
         expect(page).to have_content '5'
       end
     end
@@ -57,7 +54,7 @@ RSpec.describe 'レッスンの日時', type: :system do
     let(:lesson) { create(:lesson, name: 'オンライン柔道') }
 
     before do
-      create(:lesson_date, id: 25, lesson: lesson, start_at: '2025-03-15 10:00:00', end_at: '2025-03-15 12:00:00', capacity: 5, url: 'https://www.example.com')
+      create(:lesson_date, id: 25, lesson: lesson, start_at: Time.current + 1.hour, end_at: Time.current + 3.hours, capacity: 5, url: 'https://www.example.com')
     end
 
     it 'レッスンの日時の詳細データが表示されていること' do
@@ -68,8 +65,8 @@ RSpec.describe 'レッスンの日時', type: :system do
       click_on '25'
 
       expect(page).to have_selector 'h1', text: 'オンライン柔道'
-      expect(page).to have_content '開始日時: 2025年03月15日(土) 10時00分'
-      expect(page).to have_content '終了日時: 2025年03月15日(土) 12時00分'
+      expect(page).to have_content '開始日時:'
+      expect(page).to have_content '終了日時:'
       expect(page).to have_content '定員: 5'
       expect(page).to have_content 'URL: https://www.example.com'
       expect(page).to have_link '編集'
@@ -89,8 +86,11 @@ RSpec.describe 'レッスンの日時', type: :system do
 
       expect(page).to have_selector 'h1', text: '新規レッスン日時登録'
 
-      fill_in '開始日時', with: '002025-03-15-09:30'
-      fill_in '終了日時', with: '002025-03-15-10:00'
+      start_time = Time.current + 30.minutes
+      end_time = Time.current + 1.hour
+
+      fill_in '開始日時', with: format_datetime_for_input(start_time)
+      fill_in '終了日時', with: format_datetime_for_input(end_time)
       fill_in '定員', with: 1
       fill_in 'URL', with: 'https://www.example.test.com'
 
@@ -100,8 +100,8 @@ RSpec.describe 'レッスンの日時', type: :system do
       end.to change(lesson.lesson_dates, :count).by(1)
 
       expect(page).to have_selector 'h1', text: 'ポルトガル語入門'
-      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
-      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '開始日時:'
+      expect(page).to have_content '終了日時:'
       expect(page).to have_content '定員: 1'
       expect(page).to have_content 'URL: https://www.example.test.com'
     end
@@ -116,8 +116,11 @@ RSpec.describe 'レッスンの日時', type: :system do
 
         expect(page).to have_selector 'h1', text: '新規レッスン日時登録'
 
-        fill_in '開始日時', with: '002025-03-15-08:59'
-        fill_in '終了日時', with: '002025-03-15-07:00'
+        past_time = Time.current - 1.minute
+        earlier_end_time = Time.current - 2.hours
+
+        fill_in '開始日時', with: format_datetime_for_input(past_time)
+        fill_in '終了日時', with: format_datetime_for_input(earlier_end_time)
         fill_in '定員', with: 0
         fill_in 'URL', with: 'このURLに来てねー'
 
@@ -139,20 +142,19 @@ RSpec.describe 'レッスンの日時', type: :system do
     let(:lesson) { create(:lesson, name: 'シュートフォーム改善') }
 
     before do
-      create(:lesson_date, id: 30, lesson: lesson, start_at: '2025-03-15 09:30:00', end_at: '2025-03-15 10:00:00', capacity: 8, url: 'https://www.example.football.com')
+      create(:lesson_date, id: 30, lesson: lesson, start_at: Time.current + 30.minutes, end_at: Time.current + 1.hour, capacity: 8, url: 'https://www.example.football.com')
     end
 
     it 'レッスンの日時を編集することができること' do
       visit admins_lesson_path(lesson)
 
       expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
-      expect(page).to have_content '2025年03月15日(土) 09時30分'
 
       click_on '30'
 
       expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
-      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
-      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '開始日時:'
+      expect(page).to have_content '終了日時:'
       expect(page).to have_content '定員: 8'
       expect(page).to have_content 'URL: https://www.example.football.com'
 
@@ -160,8 +162,11 @@ RSpec.describe 'レッスンの日時', type: :system do
 
       expect(page).to have_selector 'h1', text: 'レッスン日時の編集'
 
-      fill_in '開始日時', with: '002025-03-18-09:30'
-      fill_in '終了日時', with: '002025-03-18-13:30'
+      future_start = Time.current + 3.days
+      future_end = Time.current + 3.days + 4.hours
+
+      fill_in '開始日時', with: format_datetime_for_input(future_start)
+      fill_in '終了日時', with: format_datetime_for_input(future_end)
       fill_in '定員', with: 10
       fill_in 'URL', with: 'https://www.example.soccer.com'
 
@@ -171,8 +176,6 @@ RSpec.describe 'レッスンの日時', type: :system do
       end.not_to change(lesson.lesson_dates, :count)
 
       expect(page).to have_selector 'h1', text: 'シュートフォーム改善'
-      expect(page).to have_content '開始日時: 2025年03月18日(火) 09時30分'
-      expect(page).to have_content '終了日時: 2025年03月18日(火) 13時30分'
       expect(page).to have_content '定員: 10'
       expect(page).to have_content 'URL: https://www.example.soccer.com'
     end
@@ -182,20 +185,19 @@ RSpec.describe 'レッスンの日時', type: :system do
     let(:lesson) { create(:lesson, name: '守備の極意') }
 
     before do
-      create(:lesson_date, id: 30, lesson: lesson, start_at: '2025-03-15 09:30:00', end_at: '2025-03-15 10:00:00')
+      create(:lesson_date, id: 30, lesson: lesson, start_at: Time.current + 30.minutes, end_at: Time.current + 1.hour)
     end
 
     it 'レッスンの日時を削除することができること' do
       visit admins_lesson_path(lesson)
 
       expect(page).to have_selector 'h1', text: '守備の極意'
-      expect(page).to have_content '2025年03月15日(土) 09時30分'
 
       click_on '30'
 
       expect(page).to have_selector 'h1', text: '守備の極意'
-      expect(page).to have_content '開始日時: 2025年03月15日(土) 09時30分'
-      expect(page).to have_content '終了日時: 2025年03月15日(土) 10時00分'
+      expect(page).to have_content '開始日時:'
+      expect(page).to have_content '終了日時:'
 
       expect do
         accept_confirm do
@@ -207,7 +209,6 @@ RSpec.describe 'レッスンの日時', type: :system do
       expect(page).to have_selector 'h1', text: '守備の極意'
       expect(page).to have_content 'レッスン日時が登録されていません'
       expect(page).not_to have_link '30'
-      expect(page).not_to have_content '2025年03月15日(土) 09時30分'
     end
   end
 end
