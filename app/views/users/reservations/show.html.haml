@@ -1,10 +1,17 @@
 %h1.fs-2= @reservation.lesson_name
 
-.ms-auto
+.my-4
   .mt-3 レッスン詳細: #{@reservation.lesson_description}
   .mt-3 講師: #{@reservation.instructor_name}
   .mt-3 開始日時: #{l(@reservation.start_at)}
   .mt-3 終了日時: #{l(@reservation.end_at)}
   .mt-3 URL: #{@reservation.url}
+
+%h2.fs-4 レッスンの事前質問
+.my-4
+  - @reservation.lesson_question_answers.each do |lesson_qa|
+    .mt-4
+      %h2.fs-5 質問: #{lesson_qa.question}
+      .fs-5 回答: #{lesson_qa.answer}
 
 .mt-5= button_to 'キャンセル', reservation_path(@reservation), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'

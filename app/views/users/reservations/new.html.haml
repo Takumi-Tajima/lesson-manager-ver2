@@ -9,10 +9,10 @@
       %strong 講師:
       = @reservation.instructor_name
     %p
-      %strong 開始時間:
+      %strong 開始日時:
       = l(@reservation.start_at)
     %p
-      %strong 終了時間:
+      %strong 終了日時:
       = l(@reservation.end_at)
 
 = simple_form_for(@reservation) do |f|
@@ -24,7 +24,7 @@
   = f.input :end_at, as: :hidden, input_html: { value: @reservation.end_at }
   = f.input :url, as: :hidden, input_html: { value: @reservation.url }
 
-  %h1.fs-2 質問事項
+  %h2 質問事項
   = f.fields_for :lesson_question_answers do |lesson_question_answer|
     = lesson_question_answer.input :question, as: :hidden, input_html: { value: lesson_question_answer.object.question }
     = lesson_question_answer.input :answer, label:  lesson_question_answer.object.question
