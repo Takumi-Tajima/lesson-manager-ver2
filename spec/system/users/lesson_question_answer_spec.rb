@@ -47,4 +47,36 @@ RSpec.describe 'レッスンの質問と回答', type: :system do
     expect(page).to have_content '質問: 剣道の経験はありますか？'
     expect(page).to have_content '回答: あります'
   end
+
+  describe '回答内容の編集' do
+    let(:reservation) { create(:reservation, user: user, lesson_name: '最強のマーケティング講座') }
+
+    before { create(:lesson_question_answer, reservation: reservation, question: 'マーケティングの経験はありますか？', answer: 'ありません') }
+
+    it 'レッスンの回答内容を編集できること' do
+      visit reservation_path(reservation)
+
+      expect(page).to have_selector 'h1', text: '最強のマーケティング講座'
+      expect(page).to have_selector 'h2', text: 'レッスンの事前質問'
+      expect(page).to have_content '質問: マーケティングの経験はありますか？'
+      expect(page).to have_content '回答: ありません'
+
+      click_on '回答内容を編集する'
+
+      expect(page).to have_selector 'h1', text: 'レッスン事前質問'
+      expect(page).to have_field 'マーケティングの経験はありますか？', with: 'ありません'
+
+      fill_in 'マーケティングの経験はありますか？', with: '少しだけあります'
+
+      expect do
+        click_on '更新する'
+        expect(page).to have_content '回答内容を編集しました。'
+      end.not_to change(reservation.lesson_question_answers, :count)
+
+      expect(page).to have_selector 'h1', text: '最強のマーケティング講座'
+      expect(page).to have_selector 'h2', text: 'レッスンの事前質問'
+      expect(page).to have_content '質問: マーケティングの経験はありますか？'
+      expect(page).to have_content '回答: 少しだけあります'
+    end
+  end
 end

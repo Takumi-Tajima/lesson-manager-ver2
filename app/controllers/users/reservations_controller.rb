@@ -4,7 +4,7 @@ class Users::ReservationsController < Users::ApplicationController
   end
 
   def show
-    @reservation = current_user.reservations.find(params[:id])
+    @reservation = current_user.reservations.find(params.expect(:id))
   end
 
   def new
