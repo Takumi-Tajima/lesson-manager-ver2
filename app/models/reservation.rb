@@ -2,6 +2,7 @@ class Reservation < ApplicationRecord
   belongs_to :lesson_date, counter_cache: true
   belongs_to :user
   has_many :lesson_question_answers, dependent: :destroy
+
   accepts_nested_attributes_for :lesson_question_answers
 
   validates :lesson_name, presence: true
