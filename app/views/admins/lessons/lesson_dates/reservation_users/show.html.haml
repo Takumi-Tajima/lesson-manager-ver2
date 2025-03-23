@@ -1,0 +1,10 @@
+%h1.fs-2= @user.name
+
+.my-4
+  .fs-3 レッスン名: #{@lesson.name}
+  .fs-3 レッスン詳細: #{@lesson.description}
+
+- @lesson_question_answers.each do |lesson_qa|
+  .mt-4
+    .fs-4 質問: #{lesson_qa.question}
+    .fs-5 回答: #{lesson_qa.answer}

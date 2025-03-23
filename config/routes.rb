@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     resources :instructors, only: %i[index new create edit update destroy]
     resources :lessons, only: %i[index show new create edit update destroy] do
       resources :lesson_dates, only: %i[show new create edit update destroy], module: 'lessons' do
-        resources :reservation_users, only: %i[index], module: 'lesson_dates'
+        resources :reservation_users, only: %i[index show], module: 'lesson_dates'
       end
       resources :lesson_questions, only: %i[show new create edit update destroy], module: 'lessons'
     end
