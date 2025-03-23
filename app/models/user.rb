@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   has_many :reservations, dependent: :destroy
 
+  scope :default_order, -> { order(:id) }
+
   def build_reservation(lesson_date)
     reservations.build(
       lesson_date: lesson_date,

@@ -7,6 +7,7 @@ class LessonDate < ApplicationRecord
 
   belongs_to :lesson
   has_many :reservations, dependent: :destroy
+  has_many :users, through: :reservations
 
   scope :default_order, -> { order(:id) }
   scope :ordered_by_start_time, -> { order(start_at: :asc) }

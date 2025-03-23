@@ -10,3 +10,6 @@
 .mt-5
   = link_to '編集', edit_admins_lesson_lesson_date_path(@lesson, @lesson_date), class: 'btn btn-primary'
   = button_to '削除', admins_lesson_lesson_date_path(@lesson, @lesson_date), method: :delete, data: { turbo_confirm: t('views.common.confirm.destroy') }, class: 'btn btn-danger'
+
+- if @lesson_date.reservations.present?
+  .mt-5= link_to '予約ユーザー一覧へ', admins_lesson_lesson_date_reservation_users_path(@lesson, @lesson_date), class: 'btn btn-primary'

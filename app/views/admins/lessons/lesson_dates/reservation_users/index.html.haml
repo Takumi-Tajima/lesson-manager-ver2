@@ -1,0 +1,15 @@
+%h1.fs-2 予約しているユーザー一覧
+
+%table.table.mt-3
+  %thead
+    %tr
+      %th ID
+      %th 名前
+      %th メールアドレス
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= link_to user.id, admins_lesson_lesson_date_reservation_user_path(@lesson, @lesson_date, user)
+        %td= user.name
+        %td= user.email
