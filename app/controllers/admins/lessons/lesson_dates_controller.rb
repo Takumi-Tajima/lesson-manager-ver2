@@ -38,8 +38,7 @@ class Admins::Lessons::LessonDatesController < Admins::ApplicationController
   private
 
   def set_lesson
-    # TODO: 公開中のレッスンから引いてくる
-    @lesson = Lesson.find(params.expect(:lesson_id))
+    @lesson = Lesson.published.find(params.expect(:lesson_id))
   end
 
   def set_lesson_date

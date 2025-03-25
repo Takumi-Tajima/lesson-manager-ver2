@@ -15,8 +15,7 @@ class Admins::Lessons::LessonDates::ReservationUsersController < Admins::Applica
   private
 
   def set_lesson
-    # TODO: 公開中のレッスンのみを表示する
-    @lesson = Lesson.find(params.expect(:lesson_id))
+    @lesson = Lesson.published.find(params.expect(:lesson_id))
   end
 
   def set_lesson_date
