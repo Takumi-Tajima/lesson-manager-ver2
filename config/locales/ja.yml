@@ -16,6 +16,7 @@ ja:
         name: レッスン名
         description: 説明
         instructor: 講師
+        published: 公開
       instructor:
         name: 名前
         email: メールアドレス
