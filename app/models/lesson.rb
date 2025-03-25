@@ -1,4 +1,6 @@
 class Lesson < ApplicationRecord
+  include Publishable
+
   validates :name, presence: true
 
   belongs_to :instructor

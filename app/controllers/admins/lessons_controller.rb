@@ -45,6 +45,6 @@ class Admins::LessonsController < Admins::ApplicationController
   end
 
   def lesson_params
-    params.expect(lesson: %i[name description instructor_id])
+    params.expect(lesson: %i[name description published instructor_id])
   end
 end
