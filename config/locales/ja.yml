@@ -25,9 +25,12 @@ ja:
         password: パスワード
     errors:
       models:
+        lesson:
+          attributes:
+            published:
+              must_have_description_when_published: 'するには、レッスンの説明を入力してください'
         reservation:
           attributes:
-            lesson_date:
               base:
                 validate_time_slot_uniqueness: '別のレッスンと時間が重複しています'
                 validate_capacity: 'このレッスン日時は予約枠が埋まっています'
