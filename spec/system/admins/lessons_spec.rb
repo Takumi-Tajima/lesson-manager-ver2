@@ -22,8 +22,10 @@ RSpec.describe 'レッスンの機能', type: :system do
       expect(page).to have_link '新しいレッスンを登録'
       expect(page).to have_content 'ID'
       expect(page).to have_content 'レッスン名'
+      expect(page).to have_content '公開ステータス'
       expect(page).to have_content '1'
       expect(page).to have_content 'レッスンA'
+      expect(page).to have_content '公開中'
     end
   end
 
@@ -44,6 +46,7 @@ RSpec.describe 'レッスンの機能', type: :system do
       end
 
       expect(page).to have_selector 'h1', text: 'レッスンA'
+      expect(page).to have_content '公開ステータス: 公開中'
       expect(page).to have_content 'レッスン詳細: レッスンAの詳細な説明'
       expect(page).to have_content '講師: 田島 匠'
     end
@@ -161,6 +164,73 @@ RSpec.describe 'レッスンの機能', type: :system do
 
         expect(page).to have_selector 'h1', text: 'レッスン編集'
         expect(page).to have_content 'レッスン名を入力してください'
+      end
+    end
+  end
+
+  describe 'レッスンの公開' do
+    context 'レッスンの説明欄が埋まっている場合' do
+      before { create(:lesson, :unpublished, id: 4, name: 'スペイン語レッスン', description: 'スペイン語のレッスンです') }
+
+      it 'レッスンを公開することができること' do
+        visit admins_lessons_path
+
+        expect(page).to have_selector 'h1', text: 'レッスン一覧'
+        expect(page).to have_content 'スペイン語レッスン'
+        expect(page).to have_content '非公開'
+
+        find('tr', text: 'スペイン語レッスン').click_on '4'
+
+        expect(page).to have_selector 'h1', text: 'スペイン語レッスン'
+        expect(page).to have_content '公開ステータス: 非公開'
+
+        click_on '編集'
+
+        expect(page).to have_selector 'h1', text: 'レッスン編集'
+        expect(page).to have_field 'レッスン名', with: 'スペイン語レッスン'
+        expect(page).to have_field '説明', with: 'スペイン語のレッスンです'
+
+        check '公開'
+        click_on '更新する'
+
+        expect(page).to have_content 'レッスンを編集しました'
+        expect(page).to have_selector 'h1', text: 'スペイン語レッスン'
+        expect(page).to have_content '公開ステータス: 公開中'
+      end
+    end
+
+    context 'レッスンの説明欄が埋まってない場合' do
+      before { create(:lesson, :unpublished, id: 4, name: '英語レッスン', description: '') }
+
+      it 'レッスンを公開できないこと' do
+        visit admins_lessons_path
+
+        expect(page).to have_selector 'h1', text: 'レッスン一覧'
+        expect(page).to have_content '英語レッスン'
+        expect(page).to have_content '非公開'
+
+        find('tr', text: '英語レッスン').click_on '4'
+
+        expect(page).to have_selector 'h1', text: '英語レッスン'
+        expect(page).to have_content '公開ステータス: 非公開'
+
+        click_on '編集'
+
+        expect(page).to have_selector 'h1', text: 'レッスン編集'
+        expect(page).to have_field 'レッスン名', with: '英語レッスン'
+
+        check '公開'
+        click_on '更新する'
+
+        expect(page).to have_content '公開するには、レッスンの説明を入力してください'
+        expect(page).to have_selector 'h1', text: 'レッスン編集'
+        expect(page).to have_field 'レッスン名', with: '英語レッスン'
+
+        visit admins_lessons_path
+
+        expect(page).to have_selector 'h1', text: 'レッスン一覧'
+        expect(page).to have_content '英語レッスン'
+        expect(page).to have_content '非公開'
       end
     end
   end
