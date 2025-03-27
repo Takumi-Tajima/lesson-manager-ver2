@@ -1,6 +1,7 @@
 %h1.fs-2= @lesson.name
 
 .ms-auto
+  .mt-3 公開ステータス: #{@lesson.published? ? '公開中' : '非公開'}
   .mt-3 レッスン詳細: #{@lesson.description}
   .mt-3 講師: #{@lesson.instructor.name}
 

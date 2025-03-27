@@ -7,9 +7,11 @@
     %tr
       %th ID
       %th レッスン名
+      %th 公開ステータス
 
   %tbody
     - @lessons.each do |lesson|
       %tr
         %td= link_to lesson.id, admins_lesson_path(lesson)
         %td= lesson.name
+        %td= lesson.published? ? '公開中' : '非公開'
