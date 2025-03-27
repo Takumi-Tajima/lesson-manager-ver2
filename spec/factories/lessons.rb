@@ -4,5 +4,9 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     instructor
     published_at { Time.current }
+
+    trait :unpublished do
+      published_at { nil }
+    end
   end
 end
