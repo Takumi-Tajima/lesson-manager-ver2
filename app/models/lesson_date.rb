@@ -6,7 +6,7 @@ class LessonDate < ApplicationRecord
   validate :validate_time_slot_uniqueness
 
   belongs_to :lesson
-  has_many :reservations, dependent: :destroy
+  has_many :reservations, dependent: :restrict_with_error
   has_many :users, through: :reservations
 
   scope :default_order, -> { order(:id) }
