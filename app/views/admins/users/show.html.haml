@@ -1,0 +1,8 @@
+%h1.fs-2=@user.name
+
+.ms-auto
+  .mt-3 メールアドレス: #{@user.email}
+  - if @user.last_sign_in_at
+    .mt-3 最終ログイン日時: #{l(@user.last_sign_in_at)}
+  .mt-3 登録日時: #{l(@user.created_at)}
+  .mt-3 更新日時: #{l(@user.updated_at)}

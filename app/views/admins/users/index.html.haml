@@ -3,12 +3,10 @@
 %table.table.table-striped.table-hover
   %thead
     %tr
-      %th ID
       %th ユーザー名
       %th メールアドレス
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.id, admins_root_path
-        %td= user.name
+        %td= link_to user.name, admins_user_path(user)
         %td= user.email
