@@ -5,6 +5,7 @@
     %ul.navbar-nav.flex-row.gap-3
       %li.nav-item= link_to 'レッスン一覧', admins_lessons_path, class: 'fs-5 text-decoration-none text-body'
       %li.nav-item= link_to '講師一覧', admins_instructors_path, class: 'fs-5 text-decoration-none text-body'
+      %li.nav-item= link_to 'ユーザー一覧', admins_users_path, class: 'fs-5 text-decoration-none text-body'
     %ul.navbar-nav.ms-auto
       - if admin_signed_in?
         %li.nav-item.d-flex
