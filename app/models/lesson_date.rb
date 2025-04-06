@@ -11,7 +11,7 @@ class LessonDate < ApplicationRecord
 
   scope :default_order, -> { order(:id) }
   scope :ordered_by_start_time, -> { order(start_at: :asc) }
-  scope :future_lessons, -> { where('start_at > ?', Time.current) }
+  scope :future_lessons, -> { where('end_at > ?', Time.current) }
 
   private
 
