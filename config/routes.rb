@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   namespace :admins do
     root 'lessons#index'
-    resources :users, only: %i[index show]
+    resources :users, only: %i[index show edit update]
     resources :instructors, only: %i[index new create edit update destroy]
     resources :lessons, only: %i[index show new create edit update destroy] do
       resources :lesson_dates, only: %i[show new create edit update destroy], module: 'lessons' do

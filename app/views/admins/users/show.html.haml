@@ -6,3 +6,6 @@
     .mt-3 最終ログイン日時: #{l(@user.last_sign_in_at)}
   .mt-3 登録日時: #{l(@user.created_at)}
   .mt-3 更新日時: #{l(@user.updated_at)}
+
+.mt-3
+  = link_to 'ユーザー編集', edit_admins_user_path(@user), class: 'btn btn-primary'
